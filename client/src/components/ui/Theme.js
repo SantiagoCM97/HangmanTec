@@ -22,7 +22,7 @@ export default createMuiTheme({
     tab: {
       fontFamily: "Open Sans",
       textTransform: "none",
-      fontWeight: 700,
+      fontWeight: 600,
       fontSize: "1rem",
       color: uiGreen,
     },
@@ -31,6 +31,12 @@ export default createMuiTheme({
       fontSize: "1rem",
       textTransform: "none",
       color: uiWhite,
+    },
+    h2: {
+      fontFamily: "Montserrat",
+      fontWeight: 500,
+      fontSize: "2.5rem",
+      color: uiGreen,
     },
   },
 });

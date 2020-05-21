@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Header from "./ui/Header";
+import GameBoard from "./GameBoard";
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "./ui/Theme.js";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
@@ -11,7 +12,7 @@ function App() {
       <BrowserRouter>
         <Header value={value} setValue={setValue} />
         <Switch>
-          <Route exact path="/" component={() => <div>Board</div>}></Route>
+          <Route exact path="/" component={GameBoard}></Route>
           <Route
             exact
             path="/history"

@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "25px",
     height: "45px",
     "&:hover": {
-      backgroundColor: theme.palette.primary.light,
+      backgroundColor: theme.palette.secondary.light,
     },
   },
   logoContainer: {
@@ -66,7 +66,6 @@ const useStyles = makeStyles((theme) => ({
 export default function Header(props) {
   const theme = useTheme();
   const classes = useStyles();
-  const matchesMD = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleChange = (e, newValue) => {
     props.setValue(newValue);
