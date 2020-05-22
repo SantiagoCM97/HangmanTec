@@ -9,7 +9,6 @@ const useStyles = makeStyles((theme) => ({
   letter: {
     ...theme.typography.h2,
     fontStyle: "italic",
-    visibility: "hidden",
   },
   underlineItem: {
     marginTop: "-10px",
@@ -35,7 +34,7 @@ export default function LetterSlot(props) {
           {props.letter}
         </Typography>
       </Grid>
-      <Grid item alignItems="center" className={classes.underlineItem}>
+      <Grid item className={classes.underlineItem}>
         <img
           className={classes.lineImg}
           alt="letter Underline"

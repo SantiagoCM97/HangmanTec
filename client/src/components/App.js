@@ -7,12 +7,20 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 function App() {
   const [value, setValue] = useState(0);
+  const [newGame, setNewGame] = useState(1);
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-        <Header value={value} setValue={setValue} />
+        <Header
+          value={value}
+          setValue={setValue}
+          newGame={newGame}
+          setNewGame={setNewGame}
+        />
         <Switch>
-          <Route exact path="/" component={GameBoard}></Route>
+          <Route exact path="/">
+            <GameBoard newGame={newGame} />
+          </Route>
           <Route
             exact
             path="/history"

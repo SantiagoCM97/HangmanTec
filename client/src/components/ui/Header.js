@@ -98,6 +98,7 @@ export default function Header(props) {
           variant="contained"
           color="secondary"
           className={classes.button}
+          onClick={() => props.setNewGame(props.newGame + 1)}
         >
           New Game
         </Button>
