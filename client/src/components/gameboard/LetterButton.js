@@ -26,28 +26,34 @@ export default function LetterButton(props) {
   const classes = useStyles(theme);
   const [hidden, setHidden] = useState(false);
 
-  const handleClick = (e) => {
-    e.preventDefault();
-    setHidden(true);
-    //TODO game Logic
-  };
-
-  const hiddenButton = {
-    ...classes.letterButton,
-    color: "red",
+  const findLetterInWordtoCompare = (letter, word) => {
+    var tmpFlags = props.lettersFoundFlags;
+    word.forEach((element, index) => {
+      if (element === letter) {
+        tmpFlags[index] = true;
+      }
+    });
+    return tmpFlags;
   };
 
   useEffect(() => {
     setHidden(false);
   }, [props.newGame]);
 
-  const hiddenLetter = {};
   return (
     <Button
       variant="contained"
       className={hidden ? classes.letterButtonHidden : classes.letterButton}
       color="secondary"
-      onClick={() => setHidden(true)}
+      onClick={() => {
+        setHidden(true);
+        const flags = findLetterInWordtoCompare(
+          props.letter,
+          props.wordToCompare
+        );
+        console.log(flags);
+        props.setLettersFoundFlags([1, 2, 3]);
+      }}
     >
       <Typography align="center" className={classes.letter}>
         {props.letter}

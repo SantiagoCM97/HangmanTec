@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -10,6 +10,11 @@ const useStyles = makeStyles((theme) => ({
     ...theme.typography.h2,
     fontStyle: "italic",
   },
+  foundLetter: {
+    ...theme.typography.h2,
+    fontStyle: "italic",
+    visibility: "hidden",
+  },
   underlineItem: {
     marginTop: "-10px",
   },
@@ -20,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LetterSlot(props) {
   const classes = useStyles();
-
+  const [found, setFound] = useState(props.found);
   return (
     <Grid
       container
@@ -30,7 +35,11 @@ export default function LetterSlot(props) {
       className={classes.main}
     >
       <Grid item>
-        <Typography variant="h2" align="center" className={classes.letter}>
+        <Typography
+          variant="h2"
+          align="center"
+          className={found ? classes.letterButtonHidden : classes.letterButton}
+        >
           {props.letter}
         </Typography>
       </Grid>

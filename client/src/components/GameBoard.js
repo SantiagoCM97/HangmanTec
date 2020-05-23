@@ -30,51 +30,70 @@ const useStyles = makeStyles((theme) => ({
 export default function GameBoard(props) {
   const classes = useStyles();
   const alphabet = Array.from("abcdefghijklmnopqrstuvwxyz".toUpperCase());
-  const [gameWord, setGameWord] = useState("");
   const [newGame, setNewGame] = useState(1);
+  const [wordToCompare, setWordToCompare] = useState([]);
   const [currentScore, setCurrentScore] = useState(0);
+  const [lettersFoundFlags, setLettersFoundFlags] = useState([]);
 
   useEffect(() => {
     const fetchWord = async () => {
       const result = await axios(
         "https://random-word-api.herokuapp.com/word?number=1"
       );
-      console.log(result.data[0]);
-      setGameWord(result.data[0]);
-    };
-    const rerenderButtons = () => {
-      setNewGame(newGame + 1);
+      setWordToCompare(Array.from(result.data[0].toUpperCase()));
+      setLettersFoundFlags(new Array(result.data[0].length).fill(false));
     };
 
     fetchWord();
-    rerenderButtons();
     setCurrentScore(0);
-    console.log(props.newGame);
     setNewGame(props.newGame);
-    console.log(newGame);
     //RESTART ANIMATION
   }, [props.newGame]);
 
-  const slots = (currentWord) => {
-    const word = Array.from(currentWord.toUpperCase());
-    return word.map((letter, index) => (
-      <Grid item>
-        <LetterSlot letter={letter} key={`${letter}${index}`} />
-      </Grid>
-    ));
-  };
+  useEffect(() => {
+    console.log(lettersFoundFlags);
+  }, [lettersFoundFlags]);
 
-  const buttons = (newGame) => {
-    return alphabet.map((letter, index) => (
-      <Grid item>
-        <LetterButton
-          letter={letter}
-          newGame={newGame}
-          key={`${letter}${index}`}
-        />
-      </Grid>
-    ));
-  };
+  const slots = (
+    <Grid
+      container
+      justify="center"
+      spacing={3}
+      className={classes.lettersContainer}
+    >
+      {wordToCompare.map((letter, index) => (
+        <Grid item>
+          <LetterSlot
+            letter={letter}
+            found={lettersFoundFlags[index]}
+            key={`${letter}${index}`}
+          />
+        </Grid>
+      ))}
+    </Grid>
+  );
+
+  const buttons = (
+    <Grid
+      container
+      justify="center"
+      spacing={2}
+      className={classes.lettersContainer}
+    >
+      {alphabet.map((letter, index) => (
+        <Grid item>
+          <LetterButton
+            letter={letter}
+            newGame={newGame}
+            wordToCompare={wordToCompare}
+            lettersFoundFlags={lettersFoundFlags}
+            setLettersFoundFlags={setLettersFoundFlags}
+            key={`${letter}${index}`}
+          />
+        </Grid>
+      ))}
+    </Grid>
+  );
 
   return (
     <Grid container direction="row" className={classes.mainContainer}>
@@ -82,7 +101,6 @@ export default function GameBoard(props) {
         <Grid
           container
           direction="column"
-          xs={12}
           justify="center"
           alignItems="center"
           className={classes.scoreContainer}
@@ -110,24 +128,10 @@ export default function GameBoard(props) {
           className={classes.gameContainer}
         >
           <Grid item xs={12} className={classes.lettersItem}>
-            <Grid
-              container
-              justify="center"
-              spacing={3}
-              className={classes.lettersContainer}
-            >
-              {gameWord ? slots(gameWord) : "Loading..."}
-            </Grid>
+            {slots}
           </Grid>
           <Grid item xs={12} className={classes.lettersItem}>
-            <Grid
-              container
-              justify="center"
-              spacing={2}
-              className={classes.lettersContainer}
-            >
-              {newGame ? buttons(newGame) : null}
-            </Grid>
+            {buttons}
           </Grid>
         </Grid>
       </Grid>
