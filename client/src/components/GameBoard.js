@@ -55,11 +55,10 @@ const useStyles = makeStyles((theme) => ({
 export default function GameBoard(props) {
   const classes = useStyles();
   const alphabet = Array.from("abcdefghijklmnopqrstuvwxyz".toUpperCase());
-  const [newGame, setNewGame] = useState(1);
   const [wordToCompare, setWordToCompare] = useState([]);
   const [currentScore, setCurrentScore] = useState(0);
   const [lettersFoundFlags, setLettersFoundFlags] = useState([]);
-  const [mistakes, setMistakes] = useState(1);
+  const [mistakes, setMistakes] = useState(5);
   const [modalStyle] = useState(getModalStyle);
   const [gameOverModalOpen, setGameOverModalOpen] = useState(false);
 
@@ -70,9 +69,11 @@ export default function GameBoard(props) {
       );
       setWordToCompare(Array.from(result.data[0].toUpperCase()));
       setLettersFoundFlags(new Array(result.data[0].length).fill(false));
+      console.log("word: ", result.data[0].toUpperCase());
     };
 
     fetchWord();
+    setMistakes(5);
 
     //RESTART ANIMATION
   }, [props.newGame]);
@@ -95,6 +96,20 @@ export default function GameBoard(props) {
   function handleGameoverModalClose() {
     setGameOverModalOpen(false);
   }
+
+  const handleLetterButtonClick = (letter) => {
+    var tmpFlags = [];
+    var mistake = true;
+    Object.assign(tmpFlags, lettersFoundFlags);
+    wordToCompare.forEach((element, index) => {
+      if (element === letter) {
+        mistake = false;
+        tmpFlags[index] = true;
+      }
+    });
+    setLettersFoundFlags(tmpFlags);
+    if (mistake) addMistake();
+  };
 
   const slots = (
     <Grid
@@ -122,16 +137,14 @@ export default function GameBoard(props) {
       spacing={2}
       className={classes.lettersContainer}
     >
+      {console.log("GameBoard: ", props.newGame)}
       {alphabet.map((letter, index) => (
         <Grid item>
           <LetterButton
+            action={handleLetterButtonClick}
             letter={letter}
-            addMistake={addMistake}
-            newGame={newGame}
-            wordToCompare={wordToCompare}
-            lettersFoundFlags={lettersFoundFlags}
-            setLettersFoundFlags={setLettersFoundFlags}
             key={`${letter}${index}`}
+            newGame={props.newGame}
           />
         </Grid>
       ))}
@@ -180,6 +193,7 @@ export default function GameBoard(props) {
           </Grid>
           <Grid item xs={12} className={classes.lettersItem}>
             {buttons}
+            Hello
           </Grid>
         </Grid>
       </Grid>
