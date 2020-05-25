@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 function App() {
   const [value, setValue] = useState(0);
   const [newGame, setNewGame] = useState(1);
+
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
@@ -19,7 +20,7 @@ function App() {
         />
         <Switch>
           <Route exact path="/">
-            <GameBoard newGame={newGame} />
+            <GameBoard newGame={newGame} setNewGame={setNewGame} />
           </Route>
           <Route
             exact

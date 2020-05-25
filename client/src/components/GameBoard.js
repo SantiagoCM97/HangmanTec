@@ -62,7 +62,6 @@ export default function GameBoard(props) {
   const [mistakes, setMistakes] = useState(1);
   const [modalStyle] = useState(getModalStyle);
   const [gameOverModalOpen, setGameOverModalOpen] = useState(false);
-  var gameOver = false;
 
   useEffect(() => {
     const fetchWord = async () => {
@@ -74,8 +73,7 @@ export default function GameBoard(props) {
     };
 
     fetchWord();
-    setCurrentScore(0);
-    setNewGame(props.newGame);
+
     //RESTART ANIMATION
   }, [props.newGame]);
 
@@ -186,8 +184,7 @@ export default function GameBoard(props) {
         </Grid>
       </Grid>
       <Modal
-        open={true}
-        onClose={handleGameoverModalClose}
+        open={gameOverModalOpen}
         aria-labelledby="GameOverModal"
         disableBackdropClick={true}
       >
@@ -224,6 +221,10 @@ export default function GameBoard(props) {
                 variant="contained"
                 color="primary"
                 className={classes.modalButton}
+                onClick={() => {
+                  props.setNewGame(props.newGame + 1);
+                  handleGameoverModalClose();
+                }}
               >
                 New Game
               </Button>
