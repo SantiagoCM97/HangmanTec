@@ -88,6 +88,10 @@ export default function GameBoard(props) {
     setCurrentScore(score);
   }, [lettersFoundFlags]);
 
+  useEffect(() => {
+    if (currentScore >= 100) setGameOverModalOpen(true);
+  }, [currentScore]);
+
   function addMistake() {
     setMistakes(mistakes - 1);
     if (mistakes - 1 <= 0) setGameOverModalOpen(true);
@@ -137,7 +141,6 @@ export default function GameBoard(props) {
       spacing={2}
       className={classes.lettersContainer}
     >
-      {console.log("GameBoard: ", props.newGame)}
       {alphabet.map((letter, index) => (
         <Grid item>
           <LetterButton
@@ -193,7 +196,6 @@ export default function GameBoard(props) {
           </Grid>
           <Grid item xs={12} className={classes.lettersItem}>
             {buttons}
-            Hello
           </Grid>
         </Grid>
       </Grid>
@@ -214,7 +216,7 @@ export default function GameBoard(props) {
               variant="h2"
               className={classes.modalTitle}
             >
-              Game Over!
+              {currentScore >= 100 ? "You Win!" : "Game Over!"}
             </Typography>
           </Grid>
 
