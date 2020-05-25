@@ -24,16 +24,30 @@ const useStyles = makeStyles((theme) => ({
 export default function LetterButton(props) {
   const theme = useTheme();
   const classes = useStyles(theme);
+
   const [hidden, setHidden] = useState(false);
 
   const findLetterInWordtoCompare = (letter, word) => {
-    var tmpFlags = props.lettersFoundFlags;
+    var tmpFlags = [];
+    var mistake = true;
+    Object.assign(tmpFlags, props.lettersFoundFlags);
     word.forEach((element, index) => {
       if (element === letter) {
+        mistake = false;
         tmpFlags[index] = true;
       }
     });
-    return tmpFlags;
+    return { tmpFlags, mistake };
+  };
+
+  const handleClick = () => {
+    setHidden(true);
+    const { tmpFlags, mistake } = findLetterInWordtoCompare(
+      props.letter,
+      props.wordToCompare
+    );
+    props.setLettersFoundFlags(tmpFlags);
+    if (mistake) props.addMistake();
   };
 
   useEffect(() => {
@@ -45,15 +59,7 @@ export default function LetterButton(props) {
       variant="contained"
       className={hidden ? classes.letterButtonHidden : classes.letterButton}
       color="secondary"
-      onClick={() => {
-        setHidden(true);
-        const flags = findLetterInWordtoCompare(
-          props.letter,
-          props.wordToCompare
-        );
-        console.log(flags);
-        props.setLettersFoundFlags([1, 2, 3]);
-      }}
+      onClick={() => handleClick()}
     >
       <Typography align="center" className={classes.letter}>
         {props.letter}

@@ -25,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LetterSlot(props) {
   const classes = useStyles();
-  const [found, setFound] = useState(props.found);
   return (
     <Grid
       container
@@ -38,7 +37,7 @@ export default function LetterSlot(props) {
         <Typography
           variant="h2"
           align="center"
-          className={found ? classes.letterButtonHidden : classes.letterButton}
+          className={props.found ? classes.letter : classes.foundLetter}
         >
           {props.letter}
         </Typography>
