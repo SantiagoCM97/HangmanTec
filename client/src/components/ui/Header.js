@@ -61,6 +61,9 @@ const useStyles = makeStyles((theme) => ({
   appbar: {
     zIndex: theme.zIndex.modal + 1,
   },
+  hidden: {
+    visibility: "hidden",
+  },
 }));
 
 export default function Header(props) {
@@ -75,7 +78,8 @@ export default function Header(props) {
     { name: "Board", link: "/", activeIndex: 0 },
     { name: "History", link: "/history", activeIndex: 1 },
     { name: "Settings", link: "/settings", activeIndex: 2 },
-    { name: "Logout", link: "/logout", activeIndex: 3 },
+    { name: "About", link: "/about", activeIndex: 3 },
+    { name: "Logout", link: "/logout", activeIndex: 4 },
   ];
 
   const tabs = (
@@ -109,11 +113,14 @@ export default function Header(props) {
   return (
     <React.Fragment>
       <ElevationScroll>
-        <AppBar className={classes.appbar}>
-          <Toolbar disableGutters>{tabs}</Toolbar>
+        <AppBar className={props.hidden ? classes.hidden : classes.appbar}>
+          <Toolbar disableGutters>
+            {tabs}
+            {console.log(props.hidden)}
+          </Toolbar>
         </AppBar>
       </ElevationScroll>
-      <div className={classes.toolbarMargin} />
+      <div className={props.hidden ? classes.hidden : classes.toolbarMargin} />
     </React.Fragment>
   );
 }
