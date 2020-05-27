@@ -7,8 +7,6 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { useTheme } from "@material-ui/core/styles";
 
 function ElevationScroll(props) {
   const { children } = props;
@@ -67,7 +65,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Header(props) {
-  const theme = useTheme();
   const classes = useStyles();
 
   const handleChange = (e, newValue) => {
@@ -114,10 +111,7 @@ export default function Header(props) {
     <React.Fragment>
       <ElevationScroll>
         <AppBar className={props.hidden ? classes.hidden : classes.appbar}>
-          <Toolbar disableGutters>
-            {tabs}
-            {console.log(props.hidden)}
-          </Toolbar>
+          <Toolbar disableGutters>{tabs}</Toolbar>
         </AppBar>
       </ElevationScroll>
       <div className={props.hidden ? classes.hidden : classes.toolbarMargin} />

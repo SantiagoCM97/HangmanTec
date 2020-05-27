@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import ReactDOM from "react-dom";
-import GoogleLogin from "react-google-login";
-import axios from "axios";
+import { GoogleLogin } from "react-google-login";
 
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
@@ -26,10 +23,17 @@ const useStyles = makeStyles((theme) => ({
     ...theme.typography.h2,
     fontStyle: "italic",
   },
+  buttonArea: {
+    marginTop: "30px",
+  },
 }));
 
-export default function GameBoard(props) {
+export default function Login(props) {
   const classes = useStyles();
+
+  function handleLoginFailure(response) {
+    alert("Failed to log in");
+  }
 
   return (
     <Grid
@@ -47,6 +51,16 @@ export default function GameBoard(props) {
               <br />
               Tec
             </Typography>
+          </Grid>
+          <Grid container item justify="center" className={classes.buttonArea}>
+            <GoogleLogin
+              clientId={props.clientID}
+              buttonText="Continue with Google"
+              onSuccess={props.login}
+              onFailure={handleLoginFailure}
+              cookiePolicy={"single_host_origin"}
+              responseType="code,token"
+            />
           </Grid>
         </Grid>
       </Grid>
