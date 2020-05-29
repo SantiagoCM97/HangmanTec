@@ -74,9 +74,7 @@ export default function Header(props) {
   const routes = [
     { name: "Board", link: "/", activeIndex: 0 },
     { name: "History", link: "/history", activeIndex: 1 },
-    { name: "Settings", link: "/settings", activeIndex: 2 },
-    { name: "About", link: "/about", activeIndex: 3 },
-    { name: "Logout", link: "/logout", activeIndex: 4 },
+    { name: "About", link: "/about", activeIndex: 2 },
   ];
 
   const tabs = (

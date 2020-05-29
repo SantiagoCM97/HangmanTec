@@ -102,17 +102,9 @@ function App() {
               <Redirect to="/login" />
             )}
           </Route>
-          <Route exact path="/settings">
-            {loggedIn ? <Settings /> : <Redirect to="/login" />}
-          </Route>
           <Route exact path="/about">
             {loggedIn ? <div>about</div> : <Redirect to="/login" />}
           </Route>
-          <Route
-            exact
-            path="/logout"
-            component={() => <div>Logout</div>}
-          ></Route>
         </Switch>
       </BrowserRouter>
     </ThemeProvider>
