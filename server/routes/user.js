@@ -4,17 +4,6 @@ const express = require("express");
 const router = express.Router();
 const { ListUsers } = require("../models/user");
 
-// Auth middleware
-const authCheck = (req, res, next) => {
-  if (!req.user) {
-    // if user is not logged in
-    res.redirect("/auth/login");
-  } else {
-    // if user logged in, keep going
-    next();
-  }
-};
-
 // Make a post request to create a new user
 // To call use route: /user/create
 router.post("/signin", (req, res, next) => {
