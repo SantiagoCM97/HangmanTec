@@ -1,5 +1,6 @@
 // Config file
-const keys = require('./keys');
+const keys = require("./keys");
 
-exports.DATABASE_URL = process.env.DATABASE_URL || 'mongodb://localhost/hangmanTec';
+exports.DATABASE_URL =
+  "mongodb+srv://santiago:Dolphins.12@cluster0-taltl.mongodb.net/hangman?retryWrites=true&w=majority";
 exports.PORT = process.env.PORT || 8080;

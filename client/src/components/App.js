@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "./ui/Header";
 import GameBoard from "./GameBoard";
 import About from "./About";
 import Login from "./Login";
+import History from "./History";
+import Settings from "./Settings";
+import * as api from "../api";
 import { ThemeProvider } from "@material-ui/core/styles";
 import theme from "./ui/Theme.js";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
@@ -15,20 +18,51 @@ function App() {
   const [newGame, setNewGame] = useState(1);
   const [loggedIn, setLoggedIn] = useState(false);
   const [accessToken, setAccessToken] = useState("");
+  const [user, setUser] = useState({
+    googleId: "",
+    username: "",
+    totalScore: 0,
+    games: [],
+  });
 
-  function login(response) {
+  useEffect(() => {
+    console.log("USER STATE: ", user);
+  }, [user]);
+
+  async function login(response) {
     console.log("Response: ", response);
     console.log("token: ", response.accessToken);
     if (response.accessToken) {
+      const payload = response.profileObj;
+      const { data } = await api.signin(payload);
+      console.log("Data returned: ", data);
+      setUser({
+        googleId: data.user.googleId,
+        username: data.user.username,
+        totalScore: data.user.total_scores,
+        games: data.user.games,
+        id: data.user._id,
+      });
       setLoggedIn(true);
       setAccessToken(response.accessToken);
       // BACK-END server login logic
     }
   }
-  function logout(response) {
-    setLoggedIn(false);
-    setAccessToken("");
-    // Back-end server logout logic
+
+  function updateUserState(game, score) {
+    var newGames = [];
+    Object.assign(newGames, user.games);
+    newGames.push(game);
+    console.log("Temporary Games", newGames);
+    console.log("Total  Score", user.totalScore);
+
+    setUser({
+      googleId: user.googleId,
+      username: user.username,
+      totalScore: user.totalScore + score,
+      games: newGames,
+      id: user.id,
+    });
   }
 
   return (
@@ -44,23 +78,32 @@ function App() {
         <Switch>
           <Route exact path="/login">
             {!loggedIn ? (
-              <Login clientID={CLIENT_ID} login={login} logout={logout} />
+              <Login clientID={CLIENT_ID} login={login} />
             ) : (
-              <Redirect to="/game" />
+              <Redirect to="/" />
             )}
           </Route>
-          <Route exact path="/game">
+          <Route exact path="/">
             {loggedIn ? (
-              <GameBoard newGame={newGame} setNewGame={setNewGame} />
+              <GameBoard
+                newGame={newGame}
+                setNewGame={setNewGame}
+                userId={user.id}
+                updateUser={updateUserState}
+              />
             ) : (
               <Redirect to="/login" />
             )}
           </Route>
           <Route exact path="/history">
-            {loggedIn ? <div>history</div> : <Redirect to="/login" />}
+            {loggedIn ? (
+              <History games={user.games} totalScore={user.totalScore} />
+            ) : (
+              <Redirect to="/login" />
+            )}
           </Route>
           <Route exact path="/settings">
-            {loggedIn ? <div>settings</div> : <Redirect to="/login" />}
+            {loggedIn ? <Settings /> : <Redirect to="/login" />}
           </Route>
           <Route exact path="/about">
             {loggedIn ? <div>about</div> : <Redirect to="/login" />}

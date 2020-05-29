@@ -97,6 +97,20 @@ export default function GameBoard(props) {
     if (mistakes - 1 <= 0) setGameOverModalOpen(true);
   }
 
+  async function saveGame() {
+    const payload = {
+      word: wordToCompare.join(""),
+      score: currentScore,
+      mistakes: 5 - mistakes,
+    };
+    const { data } = await axios.post(
+      `http://localhost:8080/user/${props.userId}/newGame`,
+      payload
+    );
+    console.log("DATA FROM SAVE: ", data);
+    props.updateUser(payload, currentScore);
+  }
+
   function handleGameoverModalClose() {
     setGameOverModalOpen(false);
   }
@@ -226,6 +240,11 @@ export default function GameBoard(props) {
                 variant="contained"
                 color="secondary"
                 className={classes.modalButton}
+                onClick={() => {
+                  saveGame();
+                  props.setNewGame(props.newGame + 1);
+                  handleGameoverModalClose();
+                }}
               >
                 Save
               </Button>
