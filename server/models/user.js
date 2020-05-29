@@ -89,6 +89,22 @@ const ListUsers = {
         throw new Error(err);
       });
   },
+  getGoogleAuthUser: function (user) {
+    return Users.findOne({ googleId: user.googleId })
+      .then((currentUser) => {
+        if (currentUser) {
+          // already have the user
+          console.log("user is: ", currentUser);
+          return currentUser;
+        } else {
+          // if not create user in our db
+          return this.post(user);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  },
   // Get all user games
 };
 
